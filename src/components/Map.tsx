@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
-import {Link} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import RoomIcon from '@mui/icons-material/Room';
 import {Stations} from '../utils/typings'
 
@@ -10,10 +10,11 @@ interface Props {
   zoom: number;
   inInfoPage: boolean;
   stations: [Stations] | never[];
-  setSelectedStation: React.Dispatch<React.SetStateAction<undefined>>;
 }
 
-function Map({lat, lng, zoom, stations, setSelectedStation}: Props) {
+function Map({lat, lng, zoom, stations}: Props) {
+
+  const navigate = useNavigate();
 
   const [popupStation, setPopupStation] = useState<Stations | null>(null);
 
@@ -43,7 +44,6 @@ function Map({lat, lng, zoom, stations, setSelectedStation}: Props) {
               }}>
                 <div>
 
-                {popupStation?.station.name}
                 <RoomIcon 
                   style={
                     isNaN(parseInt(station.aqi)) ? {color: 'white', transform: 'scale(1.5)'} :
@@ -54,24 +54,31 @@ function Map({lat, lng, zoom, stations, setSelectedStation}: Props) {
                     parseInt(station.aqi) <= 300 ? {color: 'purple', transform: 'scale(1.5)'} : 
                     {color: '#580f0f', transform: 'scale(1.5'}
                 }/>
+
                 </div>
 
               </button>
             </Marker>
           ))}
 
-          {popupStation &&
+          {popupStation && (
             <Popup
               latitude={popupStation.lat}
               longitude={popupStation.lon}
               anchor='bottom'
               offset={15}
+              closeOnClick={false}
+              onClose={() => setPopupStation(null)}
             >
-              <Link to={`/InfoPage/${popupStation?.uid}`}>
-                <h1>{popupStation.station.name}</h1>
-              </Link>
+              <div className=''>
+                <h1 className='underline cursor-pointer' onClick={() => navigate(`/InfoPage/${popupStation.uid}`)}>{popupStation.station.name}</h1>
+                <div>
+                  <h2>AQI: {popupStation.aqi}</h2>
+                </div>
+              </div>
+              
             </Popup>
-          }
+          )}
           
       </ReactMapGL>
   )

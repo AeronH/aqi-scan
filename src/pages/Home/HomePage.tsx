@@ -2,11 +2,8 @@ import React, { useState, useEffect} from 'react'
 import Map from '../../components/Map'
 import axios from 'axios'
 
-interface Props {
-  setSelectedStation: React.Dispatch<React.SetStateAction<undefined>>;
-}
 
-function HomePage({setSelectedStation}: Props) {
+function HomePage() {
 
   const [homePageStations, setHomePageStations] = useState([]);
   const randomStationGenerator = Math.floor((Math.random() * 50) + 400);
@@ -29,8 +26,7 @@ function HomePage({setSelectedStation}: Props) {
           lng={20} 
           zoom={1} 
           inInfoPage={false} 
-          stations={homePageStations}
-          setSelectedStation={setSelectedStation}/>
+          stations={homePageStations}/>
       </div>
     </div>
   )

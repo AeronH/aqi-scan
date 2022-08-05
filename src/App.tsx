@@ -7,17 +7,17 @@ import NavBar from './components/NavBar';
 import axios from 'axios';
 
 function App() {
-
-  const API_TOKEN = process.env.REACT_APP_AQI_API_KEY;
-  const [selectedStation, setSelectedStation] = useState<any>();
   
   return (
     <Router>
       <NavBar />
       
       <Routes>
-        <Route path='/' element={<HomePage setSelectedStation={setSelectedStation}/>} />
-        <Route path='/InfoPage/:uid' element={<InfoPage selectedStation={selectedStation}/>} />
+        <Route path='/' element={<HomePage/>} />
+        <Route path='/InfoPage'>
+          <Route path=':uid' element={<InfoPage/>} />
+        </Route>
+        
       </Routes>
     </Router>
   );
