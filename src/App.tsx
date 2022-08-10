@@ -14,8 +14,8 @@ function App() {
       
       <Routes>
         <Route path='/' element={<HomePage/>} />
-        <Route path='/InfoPage'>
-          <Route path=':uid' element={<InfoPage/>} />
+        <Route path='/InfoPage/'>
+          <Route path=':uid' element={<InfoPage/>} /> 
         </Route>
         
       </Routes>

@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { useNavigate } from 'react-router-dom'
-import RoomIcon from '@mui/icons-material/Room';
-import {Stations} from '../utils/typings'
+import { Stations } from '../utils/typings'
+import { getAqiColor } from '../utils/getAqi'
 
 interface Props {
   lat: number;
   lng: number;
   zoom: number;
-  inInfoPage: boolean;
   stations: [Stations] | never[];
+}
+
+interface Viewstate {
+  latitude: number;
+  longitude: number;
+  zoom: number;
 }
 
 function Map({lat, lng, zoom, stations}: Props) {
@@ -17,17 +22,24 @@ function Map({lat, lng, zoom, stations}: Props) {
   const navigate = useNavigate();
 
   const [popupStation, setPopupStation] = useState<Stations | null>(null);
+  const [viewState, setViewState] = useState<Viewstate | null>(null);
 
+  useEffect(() => {
+    setViewState({
+      latitude: lat,
+      longitude: lng,
+      zoom
+    });
+  },[stations])
+  
   return (
       <ReactMapGL 
-        initialViewState={{
-          latitude: lat,
-          longitude: lng,
-          zoom
-        }}
-        style={{width: '100%', height: '100%'}}
+        {...viewState}
+        style={{width: '100%', height: '100%', borderRadius: '8px'}}
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
-        mapStyle={'mapbox://styles/mapbox/dark-v10'}>
+        mapStyle={'mapbox://styles/mapbox/dark-v10'}
+        onMove={(e: any) => setViewState(e.viewState)}
+        >
 
           {stations?.map((station: Stations) => (
             <Marker 
@@ -36,26 +48,16 @@ function Map({lat, lng, zoom, stations}: Props) {
               longitude={station.lon}
              >
               <button
+                className='w-6 h-5 rounded-md flex justify-center items-center text-xs opacity-90 hover:opacity-100 shadow-xl'
+                style={{backgroundColor: getAqiColor(station.aqi), transform: 'scale(1.5)'}}
+                onMouseEnter={() => setPopupStation(station)}
+                onMouseLeave={() => setPopupStation(null)}
                 onClick={(e) => {
                   e.preventDefault();
-                  setPopupStation(station); 
-                  console.log('popup station', popupStation);
-                  console.log('clicked station', station);
+                  navigate(`/InfoPage/${station.uid}`)
               }}>
-                <div>
 
-                <RoomIcon 
-                  style={
-                    isNaN(parseInt(station.aqi)) ? {color: 'white', transform: 'scale(1.5)'} :
-                    parseInt(station.aqi) <= 50 ? {color: 'green', transform: 'scale(1.5)'} : 
-                    parseInt(station.aqi) <= 100 ? {color: 'yellow', transform: 'scale(1.5)'} :
-                    parseInt(station.aqi) <= 150 ? {color: 'orange', transform: 'scale(1.5)'} : 
-                    parseInt(station.aqi) <= 200 ? {color: '#c40d43', transform: 'scale(1.5)'} : 
-                    parseInt(station.aqi) <= 300 ? {color: 'purple', transform: 'scale(1.5)'} : 
-                    {color: '#580f0f', transform: 'scale(1.5'}
-                }/>
-
-                </div>
+                {station.aqi}
 
               </button>
             </Marker>
@@ -67,16 +69,8 @@ function Map({lat, lng, zoom, stations}: Props) {
               longitude={popupStation.lon}
               anchor='bottom'
               offset={15}
-              closeOnClick={false}
-              onClose={() => setPopupStation(null)}
             >
-              <div className=''>
-                <h1 className='underline cursor-pointer' onClick={() => navigate(`/InfoPage/${popupStation.uid}`)}>{popupStation.station.name}</h1>
-                <div>
-                  <h2>AQI: {popupStation.aqi}</h2>
-                </div>
-              </div>
-              
+                {popupStation.station.name}
             </Popup>
           )}
           

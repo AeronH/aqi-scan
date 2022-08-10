@@ -2,25 +2,22 @@ import RoomIcon from '@mui/icons-material/Room';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import axios from 'axios';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Box } from '@mui/material';
 import { Stations } from '../utils/typings';
 
 function NavBar() {
 
   const navigate = useNavigate();
 
-  const [searchedStation, setSearchedStation] = useState<string>('');
-  const [filteredStations, setFilteredStations] = useState<string[]>([]);
+  const [searchedStation, setSearchedStation] = useState<string | null>(null);
+  const [filteredStations, setFilteredStations] = useState<Stations[]>([]);
 
   useEffect(() => {
     axios.get(`https://api.waqi.info/search/?keyword=${searchedStation}&token=${process.env.REACT_APP_AQI_API_KEY}`).then((response) => {
-
-      let stations: string[] = [];
-      response.data.data.forEach((station: Stations) => stations.push(station.station.name));
-      
-      setFilteredStations(stations);
+      setFilteredStations(response.data.data);
     });
   }, [searchedStation]);
+
 
   const getClosestStation = () => {
     axios.get(`https://api.waqi.info/feed/here/?token=${process.env.REACT_APP_AQI_API_KEY}`).then((response) => {
@@ -32,25 +29,40 @@ function NavBar() {
     <nav className='fixed w-full bg-black top-0 z-50'>
       <main className='max-w-7xl mx-auto flex p-3 items-center'>
         <Link to='/'>
-          <h1 className='text-white text-xl mx-3'>AQI Scan</h1>
+          <h1 className='text-white text-xl mx-5'>AQI Scan</h1>
         </Link>
 
         <Autocomplete 
           options={filteredStations}
+          getOptionLabel={(filteredStation) => `${filteredStation.station.name}`}
+          noOptionsText={'There are no stations with that name'}
           limitTags={3}
           sx={{ width: 300}}
+          renderOption={(props, filteredStations) => (
+
+            <Box component='li' 
+                 {...props} 
+                 key={filteredStations.uid}
+                 onClick={() => {
+                   navigate(`/InfoPage/${filteredStations.uid}`);
+                   setSearchedStation(null);
+                 }}>
+              {filteredStations.station.name}
+            </Box>
+
+          )}
           renderInput={(params) => <TextField {...params} 
+                                      onChange={(e) => setSearchedStation(e.target.value)}          
+                                      value={params}
                                       sx={{background: 'white'}}
                                       label='Search stations'
                                       variant="filled" 
-                                      value={searchedStation} 
-                                      onChange={(e) => setSearchedStation(e.target.value)} 
                                     />}/>
 
           <RoomIcon 
             className='text-white ml-3 transform scale-125 hover:text-slate-300 hover:scale-150 hover:cursor-pointer'
             onClick={() => getClosestStation()}/>
-        
+          <h1 className='text-white'>{searchedStation}</h1>
       </main>
     </nav>
   )

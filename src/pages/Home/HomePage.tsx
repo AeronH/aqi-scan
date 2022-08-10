@@ -25,7 +25,6 @@ function HomePage() {
           lat={20} 
           lng={20} 
           zoom={1} 
-          inInfoPage={false} 
           stations={homePageStations}/>
       </div>
     </div>
