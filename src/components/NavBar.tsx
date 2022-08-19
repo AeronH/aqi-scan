@@ -29,7 +29,7 @@ function NavBar() {
     <nav className='fixed w-full bg-black top-0 z-50'>
       <main className='max-w-7xl mx-auto flex p-3 items-center'>
         <Link to='/'>
-          <h1 className='text-white text-xl mx-5'>AQI Scan</h1>
+          <h1 className='text-white text-2xl mx-5'>AQI Scan</h1>
         </Link>
 
         <Autocomplete 
@@ -38,6 +38,7 @@ function NavBar() {
           noOptionsText={'There are no stations with that name'}
           limitTags={3}
           sx={{ width: 300}}
+          style={{borderRadius: '16px'}}
           renderOption={(props, filteredStations) => (
 
             <Box component='li' 
@@ -52,6 +53,7 @@ function NavBar() {
 
           )}
           renderInput={(params) => <TextField {...params} 
+                                      style={{borderRadius: '16px'}}
                                       onChange={(e) => setSearchedStation(e.target.value)}          
                                       value={params}
                                       sx={{background: 'white'}}

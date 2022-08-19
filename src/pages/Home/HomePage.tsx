@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import { useState, useEffect} from 'react'
 import Map from '../../components/Map'
 import axios from 'axios'
 
@@ -10,7 +10,7 @@ function HomePage() {
 
   useEffect(() => {
     axios.get(`https://api.waqi.info/map/bounds?token=${process.env.REACT_APP_AQI_API_KEY}&latlng=90,-180,-90,180`).then((response) => {
-      const mapStations = response.data.data.filter((item: { uid: number; }) => (item.uid % randomStationGenerator === 0));
+      const mapStations = response.data.data.filter((item: { uid: number; aqi: string; }) => (item.uid % randomStationGenerator === 0 && parseInt(item.aqi)));
 
       console.log('the current stations are', mapStations);
       
@@ -19,12 +19,12 @@ function HomePage() {
   },[])
 
   return (
-    <div className="max-w-7xl mx-auto h-screen w-screen mt-16">
-      <div className='w-full h-[600px] p-10'>
+    <div className="h-screen w-screen pt-16">
+      <div className='w-full h-full'>
         <Map 
           lat={20} 
           lng={20} 
-          zoom={1} 
+          zoom={1.75} 
           stations={homePageStations}/>
       </div>
     </div>

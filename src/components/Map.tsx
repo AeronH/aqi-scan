@@ -9,6 +9,7 @@ interface Props {
   lng: number;
   zoom: number;
   stations: [Stations] | never[];
+  rounded: string;
 }
 
 interface Viewstate {
@@ -17,7 +18,7 @@ interface Viewstate {
   zoom: number;
 }
 
-function Map({lat, lng, zoom, stations}: Props) {
+function Map({lat, lng, zoom, stations, rounded}: Props) {
 
   const navigate = useNavigate();
 
@@ -30,12 +31,12 @@ function Map({lat, lng, zoom, stations}: Props) {
       longitude: lng,
       zoom
     });
-  },[stations])
+  },[stations]);
   
   return (
       <ReactMapGL 
         {...viewState}
-        style={{width: '100%', height: '100%', borderRadius: '8px'}}
+        style={{width: '100%', height: '100%', borderRadius: rounded}}
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         mapStyle={'mapbox://styles/mapbox/dark-v10'}
         onMove={(e: any) => setViewState(e.viewState)}
@@ -48,13 +49,13 @@ function Map({lat, lng, zoom, stations}: Props) {
               longitude={station.lon}
              >
               <button
-                className='w-6 h-5 rounded-md flex justify-center items-center text-xs opacity-90 hover:opacity-100 shadow-xl'
-                style={{backgroundColor: getAqiColor(station.aqi), transform: 'scale(1.5)'}}
+                className='w-9 h-7 rounded-lg flex justify-center items-center text-lg opacity-90 hover:opacity-100 z-0 hover:z-10 shadow-xl'
+                style={{backgroundColor: getAqiColor(station.aqi)}}
                 onMouseEnter={() => setPopupStation(station)}
                 onMouseLeave={() => setPopupStation(null)}
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate(`/InfoPage/${station.uid}`)
+                  navigate(`/InfoPage/${station.uid}`);
               }}>
 
                 {station.aqi}
@@ -69,6 +70,7 @@ function Map({lat, lng, zoom, stations}: Props) {
               longitude={popupStation.lon}
               anchor='bottom'
               offset={15}
+              style={{fontSize: '16px'}}
             >
                 {popupStation.station.name}
             </Popup>
@@ -76,6 +78,10 @@ function Map({lat, lng, zoom, stations}: Props) {
           
       </ReactMapGL>
   )
+}
+
+Map.defaultProps = {
+  rounded: '0',
 }
 
 

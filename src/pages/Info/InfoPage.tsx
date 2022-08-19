@@ -10,12 +10,8 @@ import PollutantGraph from './PollutantGraph'
 function InfoPage() {
 
   const { uid } = useParams();
-  const [ station, setStation ] = useState<any>();
-  const [ stationObj, setStationObj] = useState<Stations>();
-  
-  useEffect(() => {
-    
-  }, [station])
+  const [station, setStation] = useState<any>();
+  const [stationObj, setStationObj] = useState<Stations>();
   
 
   useEffect(() => {
@@ -50,34 +46,28 @@ function InfoPage() {
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 grid-rows-4 md:grid-rows-2 gap-8 mt-10 w-full'>
-            <div className='col-span-1 row-span-1 px-6 flex justify-around items-center h-[80px] rounded-lg text-lg' style={{backgroundColor: getAqiColor(station.aqi)}}>
+            <div className='col-span-1 row-span-1 px-6 flex justify-around items-center rounded-xl text-lg shadow-lg' style={{backgroundColor: getAqiColor(station.aqi)}}>
               <p>AQI <span className='font-bold'>{station.aqi}</span></p>
               <p className='text-center'>The Air is <span className='font-bold'>{getAqiName(station.aqi)}</span></p>
             </div>
 
             {Object.keys(station.forecast.daily).slice(0, 3).map((key, index) => (
-              <div className='col-span-1 row-span-1 bg-slate-200 rounded-lg' key={index}>
-                <PollutantGraph pollutant={station.forecast.daily[key]} name={key}/>
+              <div className='col-span-1 row-span-1 bg-slate-200 rounded-xl p-5 shadow-lg' key={index}>
+                <h1 className='mb-5 text-xl'>{key}</h1>
+                <PollutantGraph pollutant={station.forecast.daily[key]} name={key} station={station}/>
               </div>
             ))}
 
-            
-
-            
-            
           </div>
+
           <div className='w-full h-[500px] mt-8'>
-              {stationObj && <Map lat={station.city.geo[0]} lng={station.city.geo[1]} zoom={8} stations={[stationObj]}/>} 
+              {stationObj && <Map lat={station.city.geo[0]} lng={station.city.geo[1]} zoom={8} stations={[stationObj]}  rounded='12px'/>} 
           </div>
           
           
           
         </div>
-        
-        
-          
       }
-        
       </section>
     </main>
   )
