@@ -3,6 +3,9 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { useNavigate } from 'react-router-dom'
 import { Stations } from '../utils/typings'
 import { getAqiColor } from '../utils/getAqi'
+import mapboxgl from 'mapbox-gl';
+// @ts-ignore
+mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 interface MapProps {
   lat: number;
