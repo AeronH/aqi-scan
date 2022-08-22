@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
-import { BarChart, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 function PollutantGraph({pollutant, name, station}: any) {
-
 
   console.log(`the ${name} pollutants are`, pollutant);
 
   const [graphData, setGraphData] = useState<any>([])
   
   useEffect(() => {
-    const data = pollutant.map((entry: any) => {
+    const data = pollutant.map((entry: {day: string, max: number, min: number, avg: number}) => {
       return {name: entry.day.slice(5), Max: entry.max, Min: entry.min, Avg: entry.avg};
     });
 
