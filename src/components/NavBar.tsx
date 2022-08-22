@@ -18,7 +18,6 @@ function NavBar() {
     });
   }, [searchedStation]);
 
-
   const getClosestStation = () => {
     axios.get(`https://api.waqi.info/feed/here/?token=${process.env.REACT_APP_AQI_API_KEY}`).then((response) => {
       navigate(`/InfoPage/${response.data.data.idx}`);

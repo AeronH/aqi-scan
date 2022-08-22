@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Stations } from '../utils/typings'
 import { getAqiColor } from '../utils/getAqi'
 
-interface Props {
+interface MapProps {
   lat: number;
   lng: number;
   zoom: number;
@@ -18,7 +18,7 @@ interface Viewstate {
   zoom: number;
 }
 
-function Map({lat, lng, zoom, stations, rounded}: Props) {
+function Map({lat, lng, zoom, stations, rounded}: MapProps) {
 
   const navigate = useNavigate();
 
