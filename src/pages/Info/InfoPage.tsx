@@ -28,7 +28,7 @@ function InfoPage() {
         },
         uid: data.idx
       }
-  
+      console.log('data from info page',data);
       setStationObj(stationMapInfo);
     }) 
   }, [uid])

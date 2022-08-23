@@ -37,6 +37,7 @@ function Map({lat, lng, zoom, stations, rounded}: MapProps) {
       longitude: lng,
       zoom
     });
+    console.log('lat and long from map component', lat,' ', lng)
   },[lat, lng]);
   
   return (
