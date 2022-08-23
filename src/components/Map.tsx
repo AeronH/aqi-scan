@@ -56,7 +56,6 @@ function Map({lat, lng, zoom, stations, rounded}: MapProps) {
                 onMouseEnter={() => setPopupStation(station)}
                 onMouseLeave={() => setPopupStation(null)}
                 onClick={(e) => {
-                  e.preventDefault();
                   navigate(`/InfoPage/${station.uid}`);
               }}>
 
