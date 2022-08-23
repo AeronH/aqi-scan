@@ -3,8 +3,11 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { useNavigate } from 'react-router-dom'
 import { Stations } from '../utils/typings'
 import { getAqiColor } from '../utils/getAqi'
+import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
+
 // @ts-ignore
+// eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 interface MapProps {
