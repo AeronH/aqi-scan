@@ -29,13 +29,19 @@ function Map({lat, lng, zoom, stations, rounded}: MapProps) {
   const navigate = useNavigate();
 
   const [popupStation, setPopupStation] = useState<Stations | null>(null);
+  const [viewState, setViewState] = useState<Viewstate>()
+
+  useEffect(() => {
+    setViewState({latitude: lat, longitude: lng, zoom});
+  }, [stations])
  
   return (
       <ReactMapGL 
-        initialViewState={{latitude: lat, longitude: lng, zoom}}
+        {...viewState}
         style={{width: '100%', height: '100%', borderRadius: rounded}}
         mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
         mapStyle={'mapbox://styles/mapbox/dark-v10'}
+        onMove={(e) => setViewState(e.viewState)}
         >
 
           {stations?.map((station: Stations) => (

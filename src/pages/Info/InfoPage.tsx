@@ -60,7 +60,7 @@ function InfoPage() {
             </header>
 
             <figure className='w-full md:w-1/2 h-[480px] shadow-lg'>
-              {stationObj && <Map lat={station.city.geo[0]} lng={station.city.geo[1]} zoom={7} stations={[stationObj]} rounded='6px'/>} 
+              {stationObj && <Map lat={stationObj.lat} lng={stationObj.lon} zoom={7} stations={[stationObj]} rounded='6px'/>} 
             </figure>
           </section>
 
