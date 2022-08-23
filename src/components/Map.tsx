@@ -3,7 +3,7 @@ import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import { useNavigate } from 'react-router-dom'
 import { Stations } from '../utils/typings'
 import { getAqiColor } from '../utils/getAqi'
-import 'mapbox-gl/dist/mapbox-gl.css';
+// import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
 
 // @ts-ignore
@@ -37,7 +37,7 @@ function Map({lat, lng, zoom, stations, rounded}: MapProps) {
       longitude: lng,
       zoom
     });
-  },[stations]);
+  },[lat, lng]);
   
   return (
       <ReactMapGL 
