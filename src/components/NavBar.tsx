@@ -63,6 +63,7 @@ function NavBar() {
           <RoomIcon 
             className='text-white ml-3 transform scale-125 hover:text-slate-300 hover:scale-150 hover:cursor-pointer'
             onClick={() => getClosestStation()}/>
+            
           <h1 className='text-white'>{searchedStation}</h1>
       </main>
     </nav>
