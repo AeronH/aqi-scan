@@ -1,5 +1,4 @@
 
-
 export function getAqiColor(aqi: string): string {
   let color: string = '';
   isNaN(parseInt(aqi)) ? color = 'white' :
