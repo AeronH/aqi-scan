@@ -8,7 +8,7 @@ type GraphData = {
   Avg: number
 }
 
-function PollutantGraph({pollutant, name, station}: any) {
+function PollutantGraph({pollutant, station}: any) {
 
   const [graphData, setGraphData] = useState<GraphData[]>([])
   
